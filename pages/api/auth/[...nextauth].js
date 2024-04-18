@@ -11,7 +11,8 @@ export default NextAuth({
         email: { label: "Email", type: "email", placeholder: "jsmith@example.com" },
         password: {  label: "Password", type: "password" }
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
+        console.log("Authorize", credentials);
         const { db } = await connectToDatabase();
         const user = await db.collection('users').findOne({ email: credentials.email });
 
@@ -36,7 +37,11 @@ export default NextAuth({
       return token;
     },
     session: async ({ session, token }) => {
-      session.user.id = token.id;
+      console.log("Session", session);
+      console.log("Token", token);
+      if (token) {
+        session.user = { ...session.user, id: token.id };
+      }
       return session;
     },
   },

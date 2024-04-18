@@ -1,42 +1,42 @@
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface FinancialData {
-  earnings: number;
-  expenses: number;
-  balance: number;
+    earnings: number;
+    expenses: number;
+    balance: number;
 }
 
 const FinancialDashboard: React.FC = () => {
-  const [financialData, setFinancialData] = useState<FinancialData | null>(null);
+    const { data: session } = useSession();
+    const [financialData, setFinancialData] = useState<FinancialData | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('/api/financial-data', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Stellen Sie sicher, dass die Authentifizierung korrekt implementiert ist
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setFinancialData(data);
-      }
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            if (session) {
+                const response = await fetch('/api/financial-data');
+                if (response.ok) {
+                    const data = await response.json();
+                    setFinancialData(data);
+                }
+            }
+        };
 
-    fetchData();
-  }, []);
+        fetchData();
+    }, [session]);
 
-  if (!financialData) {
-    return <div>Loading...</div>;
-  }
+    if (!financialData) {
+        return <div>Loading...</div>;
+    }
 
-  return (
-    <div>
-      <h1>Finanzübersicht</h1>
-      <p>Einnahmen: {financialData.earnings}€</p>
-      <p>Ausgaben: {financialData.expenses}€</p>
-      <p>Saldo: {financialData.balance}€</p>
-    </div>
-  );
+    return (
+        <div>
+            <h1>Finanzübersicht</h1>
+            <p>Einnahmen: {financialData.earnings}€</p>
+            <p>Ausgaben: {financialData.expenses}€</p>
+            <p>Saldo: {financialData.balance}€</p>
+        </div>
+    );
 };
 
 export default FinancialDashboard;

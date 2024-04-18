@@ -1,44 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router'; // Importieren Sie useRouter
-import '../app/globals.css';
+import React, { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 interface LoginFormProps {
-  // Hier können Sie zusätzliche Props definieren, falls benötigt
+  // Define additional props if needed
 }
 
 const LoginForm: React.FC<LoginFormProps> = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const router = useRouter(); // Initialisieren Sie den Router
-
-  useEffect(() => {
-    const savedEmail = localStorage.getItem('email');
-    const savedPassword = localStorage.getItem('password');
-    if (savedEmail) setEmail(savedEmail);
-    if (savedPassword) setPassword(savedPassword);
-  }, []);
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Login successful', data);
-        router.push('/dashboard'); // Umleitung zur Dashboard-Seite
-      } else {
-        console.error('Login failed', data.message);
-        // Handle login failure here (e.g., showing an error message)
-      }
-    } catch (error) {
-      console.error('An error occurred during login', error);
-      // Handle network error here
+    const result = await signIn('credentials', {
+      redirect: false, // Prevent NextAuth from redirecting automatically
+      email,
+      password,
+    });
+
+    if (result?.error) {
+      // Handle error (e.g., display error message)
+      console.error('Login failed', result.error);
+    } else {
+      // Redirect the user after successful login
+      router.push('/dashboard');
     }
   };
 
