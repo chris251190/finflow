@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
-import { useSession } from 'next-auth/react';  // Importieren Sie useSession
 
 const FinancialForm: React.FC = () => {
-    const { data: session, status } = useSession();  // Verwenden Sie die useSession Hook
     const [type, setType] = useState('earnings');
     const [amount, setAmount] = useState('');
-
-    // Überprüfen Sie den Session-Status und reagieren Sie entsprechend
-    if (status === "loading") {
-        return <div>Loading...</div>;  // Zeigen Sie eine Ladeanzeige, während die Session geladen wird
-    }
-
-    if (!session) {
-        return <div>Please log in to submit financial data.</div>;  // Aufforderung zum Einloggen, wenn keine Session vorhanden ist
-    }
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
