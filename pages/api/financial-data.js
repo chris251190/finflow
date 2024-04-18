@@ -14,17 +14,41 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   if (req.method === 'POST') {
-    const { earnings, expenses } = req.body;
+    const { type, amount } = req.body; // `type` kann 'earnings' oder 'expenses' sein, `amount` ist der Betrag
 
-    const result = await db.collection('financialData').insertOne({
+    // Prüfen, ob für heute bereits Daten vorhanden sind
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const existingEntry = await db.collection('financialData').findOne({
       userEmail,
-      earnings,
-      expenses,
-      balance: earnings - expenses,
-      date: new Date(),
+      date: {
+        $gte: today,
+        $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+      },
     });
 
-    res.status(201).json({ message: 'Data saved', result });
+    if (existingEntry) {
+      // Aktualisieren des vorhandenen Eintrags
+      const update = { $inc: {} };
+      update.$inc[type] = amount; // Erhöht `earnings` oder `expenses` um `amount`
+      update.$inc.balance = type === 'earnings' ? amount : -amount; // Aktualisiert den Saldo
+
+      await db.collection('financialData').updateOne({ _id: existingEntry._id }, update);
+    } else {
+      // Erstellen eines neuen Eintrags, wenn noch keiner für heute existiert
+      const entry = {
+        userEmail,
+        earnings: type === 'earnings' ? amount : 0,
+        expenses: type === 'expenses' ? amount : 0,
+        balance: type === 'earnings' ? amount : -amount,
+        date: new Date(),
+      };
+
+      await db.collection('financialData').insertOne(entry);
+    }
+
+    res.status(201).json({ message: 'Data updated' });
   } else if (req.method === 'GET') {
     const data = await db.collection('financialData').findOne({ userEmail });
     res.status(200).json(data);

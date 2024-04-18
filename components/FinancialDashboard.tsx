@@ -14,7 +14,9 @@ const FinancialDashboard: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (session) {
-                const response = await fetch('/api/financial-data');
+                const response = await fetch('/api/financial-data', {
+                    credentials: 'include'  // Stellen Sie sicher, dass Cookies mitgesendet werden
+                });
                 if (response.ok) {
                     const data = await response.json();
                     setFinancialData(data);
@@ -28,7 +30,7 @@ const FinancialDashboard: React.FC = () => {
     if (!financialData) {
         return <div>No data yet...</div>;
     }
-    
+
     return (
         <div>
             <h1>Finanzübersicht</h1>

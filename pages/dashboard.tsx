@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import FinancialDashboard from '../components/FinancialDashboard';
 import { signOut } from 'next-auth/react';
+import FinancialForm from '@/components/FinancialForm';
 
 
 const DashboardPage: React.FC = () => {
@@ -23,6 +24,7 @@ const DashboardPage: React.FC = () => {
     <div>
       <h1>Dashboard</h1>
       <FinancialDashboard />
+      <FinancialForm />
       <button onClick={() => signOut()}>Logout</button>
     </div>
   );
