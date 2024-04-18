@@ -4,6 +4,7 @@ import { connectToDatabase } from '../../../lib/db';
 import { verifyPassword } from '../../../lib/auth';
 
 export default NextAuth({
+  secret: process.env.JWT_SECRET, // Use an environment variable for the JWT secret
   providers: [
     CredentialsProvider({
       name: 'Credentials',

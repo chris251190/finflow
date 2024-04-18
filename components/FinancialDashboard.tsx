@@ -13,11 +13,13 @@ const FinancialDashboard: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log("Session in useEffect", session);
             if (session) {
                 const response = await fetch('/api/financial-data');
                 if (response.ok) {
                     const data = await response.json();
                     setFinancialData(data);
+                    console.log(data); // Log the financial data here
                 }
             }
         };
