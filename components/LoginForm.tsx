@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'; // Importieren Sie useRouter
+import '../app/globals.css';
 
 interface LoginFormProps {
   // Hier können Sie zusätzliche Props definieren, falls benötigt
@@ -7,6 +9,7 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const router = useRouter(); // Initialisieren Sie den Router
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
@@ -28,7 +31,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       const data = await response.json();
       if (response.ok) {
         console.log('Login successful', data);
-        // Handle successful login here (e.g., redirecting the user)
+        router.push('/dashboard'); // Umleitung zur Dashboard-Seite
       } else {
         console.error('Login failed', data.message);
         // Handle login failure here (e.g., showing an error message)
