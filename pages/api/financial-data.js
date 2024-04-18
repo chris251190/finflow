@@ -2,7 +2,6 @@ import { connectToDatabase } from '../../lib/db';
 import { getSession } from 'next-auth/react';
 
 export default async function handler(req, res) {
-  console.log("handler");
   const session = await getSession({ req });
 
   if (!session) {
