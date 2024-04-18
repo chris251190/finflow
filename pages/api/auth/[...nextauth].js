@@ -1,17 +1,18 @@
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectToDatabase } from '../../../lib/db';
 import { verifyPassword } from '../../../lib/auth';
 
 export default NextAuth({
-  session: {
-    jwt: true,
-  },
   providers: [
-    Providers.Credentials({
-      async authorize(credentials) {
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: "Email", type: "email", placeholder: "jsmith@example.com" },
+        password: {  label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
         const { db } = await connectToDatabase();
-
         const user = await db.collection('users').findOne({ email: credentials.email });
 
         if (!user) {
@@ -19,25 +20,23 @@ export default NextAuth({
         }
 
         const isValid = await verifyPassword(credentials.password, user.password);
-
         if (!isValid) {
           throw new Error('Could not log you in!');
         }
 
-        return { email: user.email };
+        return { email: user.email, id: user._id };
       }
     })
   ],
-  database: process.env.MONGODB_URI,
   callbacks: {
-    jwt: async (token, user) => {
+    jwt: async ({ token, user }) => {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    session: async (session, user) => {
-      session.user.id = user.id;
+    session: async ({ session, token }) => {
+      session.user.id = token.id;
       return session;
     },
   },
