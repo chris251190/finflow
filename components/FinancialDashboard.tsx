@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
 
 interface FinancialData {
     earnings: number;
@@ -8,24 +7,21 @@ interface FinancialData {
 }
 
 const FinancialDashboard: React.FC = () => {
-    const { data: session } = useSession();
     const [financialData, setFinancialData] = useState<FinancialData | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            if (session) {
                 const response = await fetch('/api/financial-data', {
-                    credentials: 'include'  // Stellen Sie sicher, dass Cookies mitgesendet werden
+                    //credentials: 'include'  // Stellen Sie sicher, dass Cookies mitgesendet werden
                 });
                 if (response.ok) {
                     const data = await response.json();
                     setFinancialData(data);
                 }
-            }
         };
 
         fetchData();
-    }, [session]);
+    }, []);
 
     if (!financialData) {
         return <div>No data yet...</div>;

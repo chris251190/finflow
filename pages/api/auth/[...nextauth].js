@@ -13,7 +13,6 @@ export default NextAuth({
         password: {  label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        console.log("Authorize", credentials);
         const { db } = await connectToDatabase();
         const user = await db.collection('users').findOne({ email: credentials.email });
 
@@ -38,8 +37,6 @@ export default NextAuth({
       return token;
     },
     session: async ({ session, token }) => {
-      console.log("Session", session);
-      console.log("Token", token);
       if (token) {
         session.user = { ...session.user, id: token.id };
       }
