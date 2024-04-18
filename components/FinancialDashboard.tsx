@@ -13,7 +13,6 @@ const FinancialDashboard: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log("Session in useEffect", session);
             if (session) {
                 const response = await fetch('/api/financial-data');
                 if (response.ok) {
