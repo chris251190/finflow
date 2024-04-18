@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   }
 
   const userEmail = session.user.email;
-  console.log("User Email", userEmail);
 
   const { db } = await connectToDatabase();
 
