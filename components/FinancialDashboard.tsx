@@ -27,7 +27,7 @@ const FinancialDashboard: React.FC = () => {
     }, [session]);
 
     if (!financialData) {
-        return <div>Not data yet...</div>;
+        return <div>No data yet...</div>;
     }
     
     return (
