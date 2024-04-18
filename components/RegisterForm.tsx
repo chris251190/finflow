@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../app/globals.css';
-
 
 interface RegisterFormProps {
   // Hier können Sie zusätzliche Props definieren, falls benötigt
