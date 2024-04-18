@@ -19,10 +19,26 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    localStorage.setItem('email', email);
-    localStorage.setItem('password', password);
-    // Implementieren Sie hier die Logik zur Registrierung
-    console.log('Registering', email, password);
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Registration successful', data);
+        // Handle successful registration here (e.g., redirecting the user)
+      } else {
+        console.error('Registration failed', data.message);
+        // Handle registration failure here (e.g., showing an error message)
+      }
+    } catch (error) {
+      console.error('An error occurred during registration', error);
+      // Handle network error here
+    }
   };
 
   return (

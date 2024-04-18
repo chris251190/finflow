@@ -18,8 +18,26 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Implementieren Sie hier die Logik zur Authentifizierung
-    console.log('Submitting', email, password);
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Login successful', data);
+        // Handle successful login here (e.g., redirecting the user)
+      } else {
+        console.error('Login failed', data.message);
+        // Handle login failure here (e.g., showing an error message)
+      }
+    } catch (error) {
+      console.error('An error occurred during login', error);
+      // Handle network error here
+    }
   };
 
   return (
