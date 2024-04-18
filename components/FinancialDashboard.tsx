@@ -19,7 +19,7 @@ const FinancialDashboard: React.FC = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setFinancialData(data);
-                    console.log(data); // Log the financial data here
+                    console.log("Financial Data", data); // Log the financial data here
                 }
             }
         };
@@ -28,9 +28,9 @@ const FinancialDashboard: React.FC = () => {
     }, [session]);
 
     if (!financialData) {
-        return <div>Loading...</div>;
+        return <div>Not data yet...</div>;
     }
-
+    
     return (
         <div>
             <h1>Finanzübersicht</h1>

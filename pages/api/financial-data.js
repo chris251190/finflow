@@ -15,7 +15,6 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   if (req.method === 'POST') {
-    console.log("POST");
     const { earnings, expenses } = req.body;
 
     const result = await db.collection('financialData').insertOne({
@@ -28,8 +27,7 @@ export default async function handler(req, res) {
 
     res.status(201).json({ message: 'Data saved', result });
   } else if (req.method === 'GET') {
-    console.log("get", userEmail);
-    const data = await db.collection('financialData').find({ userEmail }).toArray();
+    const data = await db.collection('financialData').findOne({ userEmail });
     res.status(200).json(data);
   } else {
     res.status(405).json({ message: 'Method not allowed' });
