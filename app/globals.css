@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  @apply bg-gradient-to-r from-light-blue to-soft-purple;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.container {
+  @apply flex flex-col items-center justify-center min-h-screen;
+}

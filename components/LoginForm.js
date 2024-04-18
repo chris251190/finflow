@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import '../app/globals.css';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
