@@ -11,13 +11,13 @@ const FinancialDashboard: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-                const response = await fetch('/api/financial-data', {
-                    //credentials: 'include'  // Stellen Sie sicher, dass Cookies mitgesendet werden
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    setFinancialData(data);
-                }
+            const response = await fetch('/api/financial-data', {
+                credentials: 'include'  // Stellen Sie sicher, dass Cookies mitgesendet werden
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setFinancialData(data);
+            }
         };
 
         fetchData();
