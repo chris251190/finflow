@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFinancialData } from '../contexts/FinancialDataContext';
+import Modal from './Modal';
+
 
 interface FinancialData {
     date: string;
@@ -20,6 +22,8 @@ const FinFlowDashboard: React.FC = () => {
     const { financialData, reloadData } = useFinancialData();
     const [summary, setSummary] = useState<FinancialSummary | null>(null);
     const [uploads, setUploads] = useState<Record<string, any[]>>({});
+    const [selectedDocument, setSelectedDocument] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         reloadData();
@@ -56,6 +60,11 @@ const FinFlowDashboard: React.FC = () => {
         return new Date(dateString).toLocaleDateString('de-DE', options);
     };
 
+    const handleDocumentClick = (document: any) => {
+        setSelectedDocument(document);
+        setIsModalOpen(true);
+    };
+
     if (!financialData.length) {
         return <div className="text-center py-5">No data yet...</div>;
     }
@@ -76,7 +85,7 @@ const FinFlowDashboard: React.FC = () => {
                                 <h3 className="text-lg font-bold">Uploads:</h3>
                                 <ul>
                                     {uploads[data.date].map((upload, uploadIndex) => (
-                                        <li key={uploadIndex}>{upload.originalName}</li>
+                                        <li key={uploadIndex} onClick={() => handleDocumentClick(upload)}>{upload.originalName}</li>
                                     ))}
                                 </ul>
                             </div>
@@ -84,6 +93,8 @@ const FinFlowDashboard: React.FC = () => {
                     </div>
                 ))}
             </div>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} document={selectedDocument} />
+
             {summary && (
                 <div className="mt-8 p-6 bg-blue-100 rounded-lg">
                     <h2 className="text-2xl font-bold mb-4">Zusammenfassung</h2>
