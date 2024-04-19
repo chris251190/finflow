@@ -38,6 +38,7 @@ export default async function handler(req, res) {
       path: file.filepath,
       type: file.mimetype,
       size: file.size,
+      uploadDate: new Date(), 
     };
 
     try {
