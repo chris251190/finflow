@@ -51,6 +51,14 @@ const FinFlowDashboard: React.FC = () => {
         return new Date(dateString).toLocaleDateString('de-DE', options);
     };
 
+    const filterUploadsByDate = (uploads: any[], dateToFilter: string): any[] => {
+        return uploads.filter(upload => {
+            const uploadDate = new Date(upload.uploadDate).setHours(0, 0, 0, 0);
+            const filterDate = new Date(dateToFilter).setHours(0, 0, 0, 0);
+            return uploadDate === filterDate;
+        });
+    };
+
     const handleDocumentClick = (document: any) => {
         setSelectedDocument(document);
         setIsModalOpen(true);
@@ -64,25 +72,33 @@ const FinFlowDashboard: React.FC = () => {
         <div className="m-10 mx-auto px-4">
             <h1 className="text-3xl font-semibold text-center text-blue-600 mb-6">Dashboard</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {financialData.map((data, index) => (
-                    <div key={index} className="bg-white shadow-md rounded-lg p-6">
-                        <h2 className="text-xl font-bold mb-4">{formatDate(data.date)}</h2>
-                        <p className="text-md mb-2">Einnahmen: <span className="font-semibold">{data.earnings.toFixed(2)}€</span></p>
-                        <p className="text-md mb-2">Ausgaben: <span className="font-semibold">{data.expenses.toFixed(2)}€</span></p>
-                        <p className="text-md mb-2">Saldo: <span className="font-semibold">{data.balance ? data.balance.toFixed(2) : '0.00'}€</span></p>
-
-                        {uploads && uploads.length > 0 && (
-                            <div>
-                                <h3 className="text-lg font-bold">Uploads:</h3>
-                                <ul>
-                                    {uploads.map((upload, uploadIndex) => (
-                                        <li key={uploadIndex} onClick={() => handleDocumentClick(upload)}><a href="#" onClick={(e) => e.preventDefault()}>{upload.originalName}</a></li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-                ))}
+            {financialData.map((data, index) => (
+    <div key={index} className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-xl font-bold mb-4">{formatDate(data.date)}</h2>
+        <p className="text-md mb-2">Einnahmen: <span className="font-semibold">{data.earnings.toFixed(2)}€</span></p>
+        <p className="text-md mb-2">Ausgaben: <span className="font-semibold">{data.expenses.toFixed(2)}€</span></p>
+        <p className="text-md mb-2">Saldo: <span className="font-semibold">{data.balance ? data.balance.toFixed(2) : '0.00'}€</span></p>
+        {
+            (() => {
+                const uploadsForDate = filterUploadsByDate(uploads, data.date);
+                if (uploadsForDate.length > 0) {
+                    return (
+                        <div>
+                            <h3 className="text-lg font-bold">Hochgeladene Rechnungen:</h3>
+                            <ul>
+                                {uploadsForDate.map((upload, uploadIndex) => (
+                                    <li key={uploadIndex} onClick={() => handleDocumentClick(upload)}>
+                                        <a href="#" onClick={(e) => e.preventDefault()}>{upload.originalName}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    );
+                }
+            })()
+        }
+    </div>
+))}
             </div>
             {selectedDocument && <DocumentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} document={selectedDocument} />}
             {summary && (
