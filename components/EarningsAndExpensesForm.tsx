@@ -18,7 +18,6 @@ const EarningsAndExpensesForm: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        await reloadData();
         try {
             const response = await fetch('/api/financial-data', {
                 method: 'POST',
@@ -31,6 +30,7 @@ const EarningsAndExpensesForm: React.FC = () => {
             if (response.ok) {
                 setMessageType('success');
                 setMessage('Finanzdaten erfolgreich aktualisiert');
+                reloadData();
             } else {
                 setMessageType('error');
                 setMessage('Fehler beim Aktualisieren der Finanzdaten');
