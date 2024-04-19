@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { signIn } from 'next-auth/react'; // Import signIn for logging in the user
 
 interface RegisterFormProps {
   // Hier können Sie zusätzliche Props definieren, falls benötigt
@@ -43,6 +44,8 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
         console.log('Registration successful', data);
         setMessage('Registrierung erfolgreich!');
         setMessageColor('green');
+        // Log the user in after successful registration
+        signIn('credentials', { email, password, redirect: false });
       } else {
         console.error('Registration failed', data.message);
         setMessage('Registrierung fehlgeschlagen: ' + data.message);
@@ -59,6 +62,7 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 max-w-md mx-auto my-8 shadow-lg rounded-lg">
+      <h2>Registrierung</h2>
       {message && <div style={{color: messageColor, transition: 'opacity 1s', opacity: message ? 1 : 0}}>{message}</div>}
       <label htmlFor="email" className="block text-sm font-bold text-gray-700">Email</label>
       <input

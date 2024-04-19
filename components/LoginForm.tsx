@@ -30,6 +30,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h2>Login</h2>
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
         <input
