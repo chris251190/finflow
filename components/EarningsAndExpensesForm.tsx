@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 const EarningsAndExpensesForm: React.FC = () => {
     const [type, setType] = useState('earnings');
     const [amount, setAmount] = useState('');
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('success'); // 'success' oder 'error'
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -16,11 +18,11 @@ const EarningsAndExpensesForm: React.FC = () => {
                 credentials: 'include'  // Stellen Sie sicher, dass Cookies mitgesendet werden
             });
             if (response.ok) {
-                setType('earnings');
-                setAmount('');
-                alert('Finanzdaten erfolgreich aktualisiert');
+                setMessageType('success');
+                setMessage('Finanzdaten erfolgreich aktualisiert');
             } else {
-                alert('Fehler beim Aktualisieren der Finanzdaten');
+                setMessageType('error');
+                setMessage('Fehler beim Aktualisieren der Finanzdaten');
             }
         } catch (error) {
             console.error('Fehler beim Senden der Daten', error);
@@ -29,6 +31,11 @@ const EarningsAndExpensesForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            {message && (
+                <div style={{ color: messageType === 'error' ? 'red' : 'green' }}>
+                    {message}
+                </div>
+            )}
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     Typ:
