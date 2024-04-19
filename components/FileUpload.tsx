@@ -50,7 +50,7 @@ const FileUpload = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center p-4 bg-white shadow-md rounded-lg">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center p-4 bg-white shadow-md rounded-lg mb-10">
             <h2>Rechnungen hochladen:</h2>
             <input type="file" onChange={handleFileChange} className="my-2 p-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"/>
             <button type="submit" className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Upload</button>
