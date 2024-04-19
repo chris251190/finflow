@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { signIn } from 'next-auth/react'; // Import signIn for logging in the user
+import { signIn } from 'next-auth/react'; 
 
-interface RegisterFormProps {
-  // Hier können Sie zusätzliche Props definieren, falls benötigt
-}
+interface RegisterFormProps {}
 
 const RegisterForm: React.FC<RegisterFormProps> = () => {
   const [email, setEmail] = useState<string>('');
