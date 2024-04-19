@@ -1,6 +1,6 @@
-import { connectToDatabase } from '../../lib/db';
+import { connectToDatabase } from '../../../lib/db';
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from '../auth/[...nextauth]';
 import { ObjectId } from 'mongodb';
 
 export default async function handler(req, res) {
@@ -9,6 +9,7 @@ export default async function handler(req, res) {
     }
 
     const session = await getServerSession(req, res, authOptions);
+    
     if (!session) {
         return res.status(401).json({ message: 'Nicht authentifiziert!' });
     }
@@ -22,7 +23,8 @@ export default async function handler(req, res) {
     const { db } = await connectToDatabase();
 
     try {
-        const image = await db.collection('images').findOne({ _id: new ObjectId(id) });
+        const image = await db.collection('uploadedFiles').findOne({ _id: new ObjectId(id) });
+        
         if (!image) {
             return res.status(404).json({ message: 'Bild nicht gefunden.' });
         }

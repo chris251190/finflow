@@ -85,7 +85,7 @@ const FinFlowDashboard: React.FC = () => {
                                 <h3 className="text-lg font-bold">Uploads:</h3>
                                 <ul>
                                     {uploads[data.date].map((upload, uploadIndex) => (
-                                        <li key={uploadIndex} onClick={() => handleDocumentClick(upload)}>{upload.originalName}</li>
+                                        <li key={uploadIndex} onClick={() => handleDocumentClick(upload)}><a href="#" onClick={(e) => e.preventDefault()}>{upload.originalName}</a></li>
                                     ))}
                                 </ul>
                             </div>
