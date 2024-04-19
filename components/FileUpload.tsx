@@ -5,7 +5,7 @@ const FileUpload = () => {
     const [file, setFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string>('');
     const [messageColor, setMessageColor] = useState<string>('');
-    const { fetchUploads } = useUploads(); // Ensure this line is added if not already present
+    const { fetchUploads } = useUploads();
 
     const displayMessage = (msg: string, color: string) => {
         setMessage(msg);
