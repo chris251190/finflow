@@ -1,9 +1,11 @@
+import { useUploads } from '@/contexts/UploadsContext';
 import { useState } from 'react';
 
 const FileUpload = () => {
     const [file, setFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string>('');
     const [messageColor, setMessageColor] = useState<string>('');
+    const { fetchUploadsForDate } = useUploads(); // Ensure this line is added if not already present
 
     const displayMessage = (msg: string, color: string) => {
         setMessage(msg);
@@ -36,7 +38,8 @@ const FileUpload = () => {
 
             if (response.ok) {
                 displayMessage('File uploaded successfully!', 'green');
-                setFile(null); // Clear the selected file
+                setFile(null); 
+                await fetchUploadsForDate(new Date().toISOString().split('T')[0]); // Fetch uploads for today's date
             } else {
                 displayMessage('Failed to upload file.', 'red');
             }

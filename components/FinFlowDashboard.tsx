@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useFinancialData } from '../contexts/FinancialDataContext';
+import { useUploads } from '../contexts/UploadsContext';
 import { DocumentModal } from './DocumentModal';
+import { IncrementalCache } from 'next/dist/server/lib/incremental-cache';
 
 
 interface FinancialData {
@@ -21,7 +23,7 @@ interface FinancialSummary {
 const FinFlowDashboard: React.FC = () => {
     const { financialData, reloadData } = useFinancialData();
     const [summary, setSummary] = useState<FinancialSummary | null>(null);
-    const [uploads, setUploads] = useState<Record<string, any[]>>({});
+    const { uploads, fetchUploadsForDate } = useUploads();
     const [selectedDocument, setSelectedDocument] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,14 +40,6 @@ const FinFlowDashboard: React.FC = () => {
         setSummary({ totalEarnings, totalExpenses, finalBalance, startDate, endDate });
     };
 
-    const fetchUploadsForDate = async (date: string) => {
-        const response = await fetch(`/api/files?date=${date}`);
-        if (response.ok) {
-            const data = await response.json();
-            setUploads(prev => ({ ...prev, [date]: data }));
-        }
-    };
-
     useEffect(() => {
         if (financialData.length > 0) {
             calculateSummary(financialData);
@@ -53,7 +47,7 @@ const FinFlowDashboard: React.FC = () => {
                 fetchUploadsForDate(data.date);
             });
         }
-    }, [financialData]);
+    }, [financialData, uploads]);
 
     const formatDate = (dateString: string) => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
