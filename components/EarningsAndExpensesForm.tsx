@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 const EarningsAndExpensesForm: React.FC = () => {
     const [type, setType] = useState('earnings');
     const [amount, setAmount] = useState('');
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success'); // 'success' oder 'error'
+
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => setMessage(''), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [message]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
