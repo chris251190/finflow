@@ -71,7 +71,7 @@ const FinFlowDashboard: React.FC = () => {
                         <p className="text-md mb-2">Ausgaben: <span className="font-semibold">{data.expenses.toFixed(2)}€</span></p>
                         <p className="text-md mb-2">Saldo: <span className="font-semibold">{data.balance ? data.balance.toFixed(2) : '0.00'}€</span></p>
 
-                        {uploads[data.date] && (
+                        {uploads[data.date] && uploads[data.date].length > 0 && (
                             <div>
                                 <h3 className="text-lg font-bold">Uploads:</h3>
                                 <ul>
