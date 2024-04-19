@@ -51,7 +51,20 @@ export default async function handler(req, res) {
 
     res.status(201).json({ message: 'Data updated' });
   } else if (req.method === 'GET') {
-    const data = await db.collection('financialData').find({ userEmail }).toArray();
+    let data = await db.collection('financialData').find({ userEmail }).toArray();
+    data = data.map(entry => {
+      const date = new Date(entry.date);
+      const formattedDate = date.toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+      return { ...entry, date: formattedDate };
+    });
     res.status(200).json(data);
   } else {
     res.status(405).json({ message: 'Method not allowed' });
