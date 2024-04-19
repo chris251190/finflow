@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
+import FileUpload from '../components/FileUpload';
 import FinFlowDashboard from '../components/FinFlowDashboard';
 import EarningsAndExpensesForm from '@/components/EarningsAndExpensesForm';
 
@@ -11,16 +12,16 @@ export default function Home() {
 
   useEffect(() => {
     if (session) {
-      setShowLogin(false); // Automatically switch to dashboard view if logged in
+      setShowLogin(false);
     }
   }, [session]);
 
   if (session) {
     return (
       <div>
-        <h1>Welcome to FinFlow!</h1>
         <FinFlowDashboard />
         <EarningsAndExpensesForm />
+        <FileUpload />
         <button onClick={() => signOut()}>Logout</button>
       </div>
     );

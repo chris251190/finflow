@@ -1,5 +1,7 @@
 import { IncomingForm } from 'formidable';
-import fs from 'fs';
+import { connectToDatabase } from '../../lib/db';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
 
 export const config = {
   api: {
@@ -8,17 +10,42 @@ export const config = {
 };
 
 export default async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session) {
+    res.status(401).json({ message: 'Nicht authentifiziert!' });
+    return;
+  }
+
+  const userEmail = session.user.email;
+
   const form = new IncomingForm({ keepExtensions: true });
 
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, async (err, fields, files) => {
     if (err) {
       res.status(500).json({ error: 'Es gab einen Fehler beim Datei-Upload.' });
       return;
     }
-    // Hier können Sie die Datei verarbeiten, z.B. in einen Cloud-Speicher hochladen
-    // Beispiel: Dateiinformationen ausgeben
-    console.log(files); // Enthält Informationen über die hochgeladenen Dateien
 
-    res.status(200).json({ message: 'Datei erfolgreich hochgeladen', files });
+    const { db } = await connectToDatabase();
+
+    // Annahme: Die Datei wird als 'file' gesendet
+    const file = files.file;
+
+    // Dateiinformationen vorbereiten
+    const fileData = {
+      userEmail: userEmail,
+      originalName: file.originalFilename,
+      path: file.filepath,
+      type: file.mimetype,
+      size: file.size,
+    };
+
+    try {
+      const result = await db.collection('uploadedFiles').insertOne(fileData);
+      res.status(200).json({ message: 'Datei erfolgreich hochgeladen', result });
+    } catch (dbError) {
+      res.status(500).json({ error: 'Fehler beim Speichern der Dateiinformationen in der Datenbank.' });
+    }
   });
 }

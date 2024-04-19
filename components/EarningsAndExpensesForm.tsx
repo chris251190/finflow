@@ -8,11 +8,6 @@ const EarningsAndExpensesForm: React.FC = () => {
     const [amount, setAmount] = useState('');
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
-    const [file, setFile] = useState<File | null>(null);
-    
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFile(e.target.files ? e.target.files[0] : null);
-    };
 
     useEffect(() => {
         if (message) {
@@ -23,22 +18,6 @@ const EarningsAndExpensesForm: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
-        if (!file) {
-            alert('Bitte wählen Sie eine Datei aus.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const response = await fetch('/api/upload', {
-            method: 'POST',
-            body: formData,
-        });
-
-        const data = await response.json();
-        console.log(data);
 
         try {
             const response = await fetch('/api/financial-data', {
@@ -90,9 +69,8 @@ const EarningsAndExpensesForm: React.FC = () => {
                     />
                 </label>
             </div>
-            <input type="file" onChange={handleFileChange} />
-            <button type="submit">Hochladen</button>
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hinzufgen</button>
+    
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hinzufügen</button>
         </form>
     );
 };
