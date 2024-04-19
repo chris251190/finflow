@@ -61,7 +61,7 @@ const FinFlowDashboard: React.FC = () => {
                         <h2 className="text-xl font-bold mb-4">{formatDate(data.date)}</h2>
                         <p className="text-md mb-2">Einnahmen: <span className="font-semibold">{data.earnings.toFixed(2)}€</span></p>
                         <p className="text-md mb-2">Ausgaben: <span className="font-semibold">{data.expenses.toFixed(2)}€</span></p>
-                        <p className="text-md">Saldo: <span className="font-semibold">{data.balance.toFixed(2)}€</span></p>
+                        <p className="text-md">Saldo: <span className="font-semibold">{data.balance ? data.balance.toFixed(2) : '0.00'}€</span></p>
                     </div>
                 ))}
             </div>
@@ -71,7 +71,7 @@ const FinFlowDashboard: React.FC = () => {
                     <p className="text-md mb-2">Zeitraum: <span className="font-semibold">{summary.startDate} bis {summary.endDate}</span></p>
                     <p className="text-md mb-2">Gesamteinnahmen: <span className="font-semibold">{summary.totalEarnings.toFixed(2)}€</span></p>
                     <p className="text-md mb-2">Gesamtausgaben: <span className="font-semibold">{summary.totalExpenses.toFixed(2)}€</span></p>
-                    <p className="text-md">Aktuelles Saldo: <span className="font-semibold">{summary.finalBalance.toFixed(2)}€</span></p>
+                    <p className="text-md">Aktuelles Saldo: <span className="font-semibold">{summary.finalBalance ? summary.finalBalance.toFixed(2) : '0.00'}€</span></p>
                 </div>
             )}
         </div>
