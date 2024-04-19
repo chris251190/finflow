@@ -19,6 +19,7 @@ interface FinancialSummary {
 const FinFlowDashboard: React.FC = () => {
     const { financialData, reloadData } = useFinancialData();
     const [summary, setSummary] = useState<FinancialSummary | null>(null);
+    const [uploads, setUploads] = useState<Record<string, any[]>>({});
 
     useEffect(() => {
         reloadData();
@@ -33,9 +34,20 @@ const FinFlowDashboard: React.FC = () => {
         setSummary({ totalEarnings, totalExpenses, finalBalance, startDate, endDate });
     };
 
+    const fetchUploadsForDate = async (date: string) => {
+        const response = await fetch(`/api/files?date=${date}`);
+        if (response.ok) {
+            const data = await response.json();
+            setUploads(prev => ({ ...prev, [date]: data }));
+        }
+    };
+
     useEffect(() => {
         if (financialData.length > 0) {
             calculateSummary(financialData);
+            financialData.forEach((data) => {
+                fetchUploadsForDate(data.date);
+            });
         }
     }, [financialData]);
 
@@ -57,7 +69,18 @@ const FinFlowDashboard: React.FC = () => {
                         <h2 className="text-xl font-bold mb-4">{formatDate(data.date)}</h2>
                         <p className="text-md mb-2">Einnahmen: <span className="font-semibold">{data.earnings.toFixed(2)}€</span></p>
                         <p className="text-md mb-2">Ausgaben: <span className="font-semibold">{data.expenses.toFixed(2)}€</span></p>
-                        <p className="text-md">Saldo: <span className="font-semibold">{data.balance ? data.balance.toFixed(2) : '0.00'}€</span></p>
+                        <p className="text-md mb-2">Saldo: <span className="font-semibold">{data.balance ? data.balance.toFixed(2) : '0.00'}€</span></p>
+
+                        {uploads[data.date] && (
+                            <div>
+                                <h3 className="text-lg font-bold">Uploads:</h3>
+                                <ul>
+                                    {uploads[data.date].map((upload, uploadIndex) => (
+                                        <li key={uploadIndex}>{upload.originalName}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
