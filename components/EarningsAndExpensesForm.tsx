@@ -32,7 +32,7 @@ const EarningsAndExpensesForm: React.FC = () => {
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     Typ:
-                    <select value={type} onChange={(e) => setType(e.target.value)} className="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <select value={type} onChange={(e) => setType(e.target.value)} className="shadow border rounded ml-5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <option value="earnings">Einnahmen</option>
                         <option value="expenses">Ausgaben</option>
                     </select>
