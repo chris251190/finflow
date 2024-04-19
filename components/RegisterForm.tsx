@@ -40,13 +40,14 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 max-w-md mx-auto my-8 shadow-lg rounded-lg">
       <input
         type="email"
         name="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
+        className="p-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-blue-500"
       />
       <input
         type="password"
@@ -54,8 +55,9 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
+        className="p-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-blue-500"
       />
-      <button type="submit">Register</button>
+      <button type="submit" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Register</button>
     </form>
   );
 };
