@@ -22,7 +22,6 @@ export default function Home() {
         <FinFlowDashboard />
         <EarningsAndExpensesForm />
         <FileUpload />
-        <button onClick={() => signOut()}>Logout</button>
       </div>
     );
   }
