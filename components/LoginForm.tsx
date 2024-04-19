@@ -24,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       console.error('Login failed', result.error);
     } else {
       // Redirect the user after successful login
-      router.push('/dashboard');
+      router.push('/');
     }
   };
 
