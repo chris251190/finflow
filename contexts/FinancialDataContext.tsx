@@ -15,8 +15,7 @@ interface FinancialDataContextType {
 
 const FinancialDataContext = createContext<FinancialDataContextType | undefined>(undefined);
 
-export const useFinancialData = () => {
-  const context = useContext(FinancialDataContext);
+export const useFinancialData = (): FinancialDataContextType => {  const context = useContext(FinancialDataContext);
   if (context === undefined) {
     throw new Error('useFinancialData must be used within a FinancialDataProvider');
   }
