@@ -41,7 +41,9 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 max-w-md mx-auto my-8 shadow-lg rounded-lg">
+      <label htmlFor="email" className="block text-sm font-bold text-gray-700">Email</label>
       <input
+        id="email"
         type="email"
         name="email"
         value={email}
@@ -49,7 +51,9 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
         required
         className="p-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-blue-500"
       />
+      <label htmlFor="password" className="block text-sm font-bold text-gray-700">Password</label>
       <input
+        id="password"
         type="password"
         name="password"
         value={password}
