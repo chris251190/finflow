@@ -6,7 +6,7 @@ interface FinancialData {
     balance: number;
 }
 
-const FinancialDashboard: React.FC = () => {
+const FinFlowDashboard: React.FC = () => {
     const [financialData, setFinancialData] = useState<FinancialData | null>(null);
 
     useEffect(() => {
@@ -37,4 +37,4 @@ const FinancialDashboard: React.FC = () => {
     );
 };
 
-export default FinancialDashboard;
+export default FinFlowDashboard;

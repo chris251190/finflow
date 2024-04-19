@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FinancialForm: React.FC = () => {
+const EarningsAndExpensesForm: React.FC = () => {
     const [type, setType] = useState('earnings');
     const [amount, setAmount] = useState('');
 
@@ -54,4 +54,4 @@ const FinancialForm: React.FC = () => {
     );
 };
 
-export default FinancialForm;
+export default EarningsAndExpensesForm;

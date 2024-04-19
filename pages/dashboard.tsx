@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import FinancialDashboard from '../components/FinancialDashboard';
+import FinFlowDashboard from '../components/FinFlowDashboard';
 import { signOut } from 'next-auth/react';
-import FinancialForm from '@/components/FinancialForm';
+import EarningsAndExpensesForm from '@/components/EarningsAndExpensesForm';
 
 
 const DashboardPage: React.FC = () => {
@@ -23,8 +23,8 @@ const DashboardPage: React.FC = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-      <FinancialDashboard />
-      <FinancialForm />
+      <FinFlowDashboard />
+      <EarningsAndExpensesForm />
       <button onClick={() => signOut()}>Logout</button>
     </div>
   );
