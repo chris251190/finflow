@@ -54,7 +54,7 @@ const FinFlowDashboard: React.FC = () => {
 
     return (
         <div className="m-10 mx-auto px-4">
-            <h1 className="text-3xl font-semibold text-center text-blue-600 mb-6">Finanzübersicht</h1>
+            <h1 className="text-3xl font-semibold text-center text-blue-600 mb-6">Dashboard</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {financialData.map((data, index) => (
                     <div key={index} className="bg-white shadow-md rounded-lg p-6">
