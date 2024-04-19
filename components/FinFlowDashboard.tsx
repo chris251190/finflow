@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useFinancialData } from '../contexts/FinancialDataContext';
 import { useUploads } from '../contexts/UploadsContext';
 import { DocumentModal } from './DocumentModal';
-import { IncrementalCache } from 'next/dist/server/lib/incremental-cache';
 
 
 interface FinancialData {
