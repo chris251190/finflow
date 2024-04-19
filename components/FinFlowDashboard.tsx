@@ -42,11 +42,8 @@ const FinFlowDashboard: React.FC = () => {
     useEffect(() => {
         if (financialData.length > 0) {
             calculateSummary(financialData);
-            financialData.forEach((data) => {
-                fetchUploadsForDate(data.date);
-            });
         }
-    }, [financialData, uploads]);
+    }, [financialData]);
 
     const formatDate = (dateString: string) => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
