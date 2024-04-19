@@ -39,7 +39,7 @@ const FileUpload = () => {
             if (response.ok) {
                 displayMessage('File uploaded successfully!', 'green');
                 setFile(null); 
-                fetchUploads(); // Fetch uploads for today's date
+                fetchUploads(); 
             } else {
                 displayMessage('Failed to upload file.', 'red');
             }
