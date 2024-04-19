@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFinancialData } from '../contexts/FinancialDataContext';
-import Modal from './Modal';
+import { DocumentModal } from './DocumentModal';
 
 
 interface FinancialData {
@@ -93,8 +93,7 @@ const FinFlowDashboard: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} document={selectedDocument} />
-
+            {selectedDocument && <DocumentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} document={selectedDocument} />}
             {summary && (
                 <div className="mt-8 p-6 bg-blue-100 rounded-lg">
                     <h2 className="text-2xl font-bold mb-4">Zusammenfassung</h2>
