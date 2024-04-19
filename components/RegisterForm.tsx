@@ -7,6 +7,8 @@ interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
+  const [messageColor, setMessageColor] = useState<string>('');
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
@@ -14,6 +16,17 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
     if (savedEmail) setEmail(savedEmail);
     if (savedPassword) setPassword(savedPassword);
   }, []);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (message) {
+      timeoutId = setTimeout(() => {
+        setMessage('');
+        setMessageColor('');
+      }, 3000);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [message, messageColor]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,19 +41,25 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
       const data = await response.json();
       if (response.ok) {
         console.log('Registration successful', data);
-        // Handle successful registration here (e.g., redirecting the user)
+        setMessage('Registrierung erfolgreich!');
+        setMessageColor('green');
       } else {
         console.error('Registration failed', data.message);
+        setMessage('Registrierung fehlgeschlagen: ' + data.message);
+        setMessageColor('red');
         // Handle registration failure here (e.g., showing an error message)
       }
     } catch (error) {
       console.error('An error occurred during registration', error);
+      setMessage('Ein Fehler ist bei der Registrierung aufgetreten.');
+      setMessageColor('red');
       // Handle network error here
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 max-w-md mx-auto my-8 shadow-lg rounded-lg">
+      {message && <div style={{color: messageColor, transition: 'opacity 1s', opacity: message ? 1 : 0}}>{message}</div>}
       <label htmlFor="email" className="block text-sm font-bold text-gray-700">Email</label>
       <input
         id="email"
