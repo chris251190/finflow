@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFinancialData } from '../contexts/FinancialDataContext';
 
 interface FinancialData {
     date: string;
@@ -16,32 +17,27 @@ interface FinancialSummary {
 }
 
 const FinFlowDashboard: React.FC = () => {
-    const [financialData, setFinancialData] = useState<FinancialData[]>([]);
+    const { financialData, reloadData } = useFinancialData();
     const [summary, setSummary] = useState<FinancialSummary | null>(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch('/api/financial-data', {
-                credentials: 'include'  // Stellen Sie sicher, dass Cookies mitgesendet werden
-            });
-            if (response.ok) {
-                const data: FinancialData[] = await response.json();
-                setFinancialData(data);
-                calculateSummary(data);
-            }
-        };
+        reloadData();
+    }, [reloadData]);
 
-        const calculateSummary = (data: FinancialData[]) => {
-            const totalEarnings = data.reduce((acc, curr) => acc + curr.earnings, 0);
-            const totalExpenses = data.reduce((acc, curr) => acc + curr.expenses, 0);
-            const finalBalance = totalEarnings - totalExpenses;
-            const startDate = data.length > 0 ? formatDate(data[0].date) : '';
-            const endDate = data.length > 0 ? formatDate(data[data.length - 1].date) : '';
-            setSummary({ totalEarnings, totalExpenses, finalBalance, startDate, endDate });
-        };
+    const calculateSummary = (data: FinancialData[]) => {
+        const totalEarnings = data.reduce((acc, curr) => acc + curr.earnings, 0);
+        const totalExpenses = data.reduce((acc, curr) => acc + curr.expenses, 0);
+        const finalBalance = totalEarnings - totalExpenses;
+        const startDate = data.length > 0 ? formatDate(data[0].date) : '';
+        const endDate = data.length > 0 ? formatDate(data[data.length - 1].date) : '';
+        setSummary({ totalEarnings, totalExpenses, finalBalance, startDate, endDate });
+    };
 
-        fetchData();
-    }, []);
+    useEffect(() => {
+        if (financialData.length > 0) {
+            calculateSummary(financialData);
+        }
+    }, [financialData]);
 
     const formatDate = (dateString: string) => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };

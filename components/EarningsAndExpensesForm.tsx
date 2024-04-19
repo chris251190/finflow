@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useFinancialData } from '../contexts/FinancialDataContext';
+
 const EarningsAndExpensesForm: React.FC = () => {
+    const { reloadData } = useFinancialData();
+
     const [type, setType] = useState('earnings');
     const [amount, setAmount] = useState('');
     const [message, setMessage] = useState('');
@@ -14,6 +18,7 @@ const EarningsAndExpensesForm: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+        reloadData();
         try {
             const response = await fetch('/api/financial-data', {
                 method: 'POST',
