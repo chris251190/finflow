@@ -5,7 +5,7 @@ import { authOptions } from "./auth/[...nextauth]";
 
 export const config = {
   api: {
-    bodyParser: false, // Deaktivieren Sie den standardmäßigen Body-Parser von Next.js
+    bodyParser: false,
   },
 };
 
@@ -29,8 +29,7 @@ export default async function handler(req, res) {
 
     const { db } = await connectToDatabase();
 
-    // Annahme: Die Datei wird als 'file' gesendet
-    const file = files.file;
+    const file = files.file[0]; 
 
     // Dateiinformationen vorbereiten
     const fileData = {
