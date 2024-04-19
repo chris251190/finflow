@@ -1,24 +1,39 @@
-import { useSession, signIn, signOut } from 'next-auth/react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
+import FinFlowDashboard from '../components/FinFlowDashboard';
+import EarningsAndExpensesForm from '@/components/EarningsAndExpensesForm';
 
-const Navigation: React.FC = () => {
+export default function Home() {
+  const [showLogin, setShowLogin] = useState(true);
   const { data: session } = useSession();
 
-  return (
-    <nav>
-     <h1>Welcome to FinFlow!</h1>
-      {session ? (
-        <>
-          <button onClick={() => signOut()}>Logout</button>
-        </>
-      ) : (
-        <>
-          <Link href="/login"><button>Login</button></Link>
-          <Link href="/register"><button>Register</button></Link>
-        </>
-      )}
-    </nav>
-  );
-};
+  useEffect(() => {
+    if (session) {
+      setShowLogin(false); // Automatically switch to dashboard view if logged in
+    }
+  }, [session]);
 
-export default Navigation;
+  if (session) {
+    return (
+      <div>
+        <h1>Welcome to FinFlow!</h1>
+        <FinFlowDashboard />
+        <EarningsAndExpensesForm />
+        <button onClick={() => signOut()}>Logout</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h1>Welcome to FinFlow!</h1>
+      <nav>
+        <button onClick={() => setShowLogin(true)} className="mr-4">Login</button>
+        <button onClick={() => setShowLogin(false)}>Register</button>
+      </nav>
+      {showLogin ? <LoginForm /> : <RegisterForm />}
+    </div>
+  );
+}
