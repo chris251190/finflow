@@ -44,27 +44,29 @@ const FinFlowDashboard: React.FC = () => {
     }, []);
 
     if (!financialData.length) {
-        return <div>No data yet...</div>;
+        return <div className="text-center py-5">No data yet...</div>;
     }
 
     return (
-        <div>
-            <h1>Finanzübersicht</h1>
-            {financialData.map((data, index) => (
-                <div key={index}>
-                    <h2>{data.date}</h2>
-                    <p>Einnahmen: {data.earnings}€</p>
-                    <p>Ausgaben: {data.expenses}€</p>
-                    <p>Saldo: {data.balance}€</p>
-                </div>
-            ))}
+        <div className="container mx-auto px-4">
+            <h1 className="text-3xl font-semibold text-center text-blue-600 mb-6">Finanzübersicht</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {financialData.map((data, index) => (
+                    <div key={index} className="bg-white shadow-md rounded-lg p-6">
+                        <h2 className="text-xl font-bold mb-4">{data.date}</h2>
+                        <p className="text-md mb-2">Einnahmen: <span className="font-semibold">{data.earnings}€</span></p>
+                        <p className="text-md mb-2">Ausgaben: <span className="font-semibold">{data.expenses}€</span></p>
+                        <p className="text-md">Saldo: <span className="font-semibold">{data.balance}€</span></p>
+                    </div>
+                ))}
+            </div>
             {summary && (
-                <div>
-                    <h2>Zusammenfassung</h2>
-                    <p>Zeitraum: {summary.startDate} bis {summary.endDate}</p>
-                    <p>Gesamteinnahmen: {summary.totalEarnings}€</p>
-                    <p>Gesamtausgaben: {summary.totalExpenses}€</p>
-                    <p>Aktuelles Saldo: {summary.finalBalance}€</p>
+                <div className="mt-8 p-6 bg-blue-100 rounded-lg">
+                    <h2 className="text-2xl font-bold mb-4">Zusammenfassung</h2>
+                    <p className="text-md mb-2">Zeitraum: <span className="font-semibold">{summary.startDate} bis {summary.endDate}</span></p>
+                    <p className="text-md mb-2">Gesamteinnahmen: <span className="font-semibold">{summary.totalEarnings}€</span></p>
+                    <p className="text-md mb-2">Gesamtausgaben: <span className="font-semibold">{summary.totalExpenses}€</span></p>
+                    <p className="text-md">Aktuelles Saldo: <span className="font-semibold">{summary.finalBalance}€</span></p>
                 </div>
             )}
         </div>
