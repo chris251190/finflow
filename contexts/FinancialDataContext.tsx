@@ -27,8 +27,6 @@ export const FinancialDataProvider: React.FC<{children: ReactNode}> = ({ childre
   const [financialData, setFinancialData] = useState<FinancialData[]>([]);
 
   const reloadData = useCallback(async () => {
-    // Implementieren Sie hier die Logik zum Laden Ihrer finanziellen Daten
-    // Zum Beispiel:
     const response = await fetch('/api/financial-data', { credentials: 'include' });
     if (response.ok) {
       const data: FinancialData[] = await response.json();
