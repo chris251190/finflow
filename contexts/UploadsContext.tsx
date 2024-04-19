@@ -1,26 +1,25 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 
 interface UploadsContextType {
-    uploads: Record<string, any[]>;
-    fetchUploadsForDate: (date: string) => Promise<void>;
+    uploads: any[];
+    fetchUploads: () => Promise<void>;
 }
 
 const UploadsContext = createContext<UploadsContextType | undefined>(undefined);
 
 export const UploadsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [uploads, setUploads] = useState<Record<string, any[]>>({});
+    const [uploads, setUploads] = useState<any[]>([]);
 
-    const fetchUploadsForDate = useCallback(async (date: string) => {
-        const response = await fetch(`/api/files?date=${date}`);
+    const fetchUploads = useCallback(async () => {
+        const response = await fetch(`/api/files`);
         if (response.ok) {
             const data = await response.json();
-            setUploads(prev => ({ ...prev, [date]: data }));
+            setUploads(data);
         }
-    }, [uploads]); 
-
+    }, []); // Removed dependency on uploads as it's no longer needed for fetching
 
     return (
-        <UploadsContext.Provider value={{ uploads, fetchUploadsForDate }}>
+        <UploadsContext.Provider value={{ uploads, fetchUploads }}>
             {children}
         </UploadsContext.Provider>
     );

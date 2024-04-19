@@ -13,28 +13,12 @@ export default async function handler(req, res) {
   }
 
   const userEmail = session.user.email;
-  const { date } = req.query; // Datum aus den Query-Parametern extrahieren
-
-  if (!date) {
-    return res.status(400).json({ message: 'Datum ist erforderlich.' });
-  }
 
   const { db } = await connectToDatabase();
 
-  // Konvertieren Sie das Datum in ein Date-Objekt, um den Beginn und das Ende des Tages zu bestimmen
-  const startDate = new Date(date);
-  startDate.setHours(0, 0, 0, 0);
-
-  const endDate = new Date(date);
-  endDate.setHours(23, 59, 59, 999);
-
   try {
     const uploads = await db.collection('uploadedFiles').find({
-      userEmail,
-      uploadDate: {
-        $gte: startDate,
-        $lte: endDate
-      }
+      userEmail
     }).toArray();
 
     res.status(200).json(uploads);

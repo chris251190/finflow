@@ -22,13 +22,14 @@ interface FinancialSummary {
 const FinFlowDashboard: React.FC = () => {
     const { financialData, reloadData } = useFinancialData();
     const [summary, setSummary] = useState<FinancialSummary | null>(null);
-    const { uploads, fetchUploadsForDate } = useUploads();
+    const { uploads, fetchUploads } = useUploads();
     const [selectedDocument, setSelectedDocument] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         reloadData();
-    }, [reloadData]);
+        fetchUploads();
+    }, [reloadData, fetchUploads]);
 
     const calculateSummary = (data: FinancialData[]) => {
         const totalEarnings = data.reduce((acc, curr) => acc + curr.earnings, 0);
@@ -70,11 +71,11 @@ const FinFlowDashboard: React.FC = () => {
                         <p className="text-md mb-2">Ausgaben: <span className="font-semibold">{data.expenses.toFixed(2)}€</span></p>
                         <p className="text-md mb-2">Saldo: <span className="font-semibold">{data.balance ? data.balance.toFixed(2) : '0.00'}€</span></p>
 
-                        {uploads[data.date] && uploads[data.date].length > 0 && (
+                        {uploads && uploads.length > 0 && (
                             <div>
                                 <h3 className="text-lg font-bold">Uploads:</h3>
                                 <ul>
-                                    {uploads[data.date].map((upload, uploadIndex) => (
+                                    {uploads.map((upload, uploadIndex) => (
                                         <li key={uploadIndex} onClick={() => handleDocumentClick(upload)}><a href="#" onClick={(e) => e.preventDefault()}>{upload.originalName}</a></li>
                                     ))}
                                 </ul>
