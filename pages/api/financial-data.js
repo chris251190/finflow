@@ -51,7 +51,7 @@ export default async function handler(req, res) {
 
     res.status(201).json({ message: 'Data updated' });
   } else if (req.method === 'GET') {
-    const data = await db.collection('financialData').findOne({ userEmail });
+    const data = await db.collection('financialData').find({ userEmail }).toArray();
     res.status(200).json(data);
   } else {
     res.status(405).json({ message: 'Method not allowed' });
